@@ -1,0 +1,26 @@
+.button {
+	text-decoration: none;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	background-color: transparent;	
+	display: inline-block;
+	border-radius: 5px;
+	line-height: 1;
+	padding: .91em 1.4em;
+	transition: $hover-effect;
+	box-sizing: border-box;
+	white-space: nowrap;
+	text-align: center;
+	user-select: none;
+	font-family: $main-font;
+	font-size: 1rem;
+	font-weight: 500;
+	&_100 {
+		width: 100%;
+	}
+	&_accent {
+		background-color: $accent;
+		color: $white;
+	}
+}
