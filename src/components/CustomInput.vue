@@ -1,32 +1,41 @@
 <template>
-	<div class="form__group">
-		<div v-if="field.required && field.error.show" class="form__field-error">{{field.error.message}}</div>
-		<input
-			class="form__field"
-			:class="[inputClass, {'form__field_error': (field.required && field.error.show)}]"
-			:type="inputType"
-			:placeholder="field.placeholder"
-			v-model="field.value"
-		/>
+	<div class="w-100">
+		<div class="sub-heading" v-if="showHeading">{{field.name}}</div>
+		<div class="form__group">
+			<div v-if="field.required && field.error.show" class="form__field-error">{{ field.error.message }}</div>
+			<input
+				v-model="field.value"
+				class="form__field"
+				:class="[
+					inputClass,
+					{ form__field_error: field.required && field.error.show }
+				]"
+				:type="inputType"
+				:placeholder="(field.placeholder !== undefined ? field.placeholder : field.name)"
+				v-mask="inputMask"
+			/>
+			<span
+				v-if="fillLocation.show"
+				class="fillLocation"
+				:class="{'disabled': fillLocation.disabled}"
+				@click="$parent.$emit('fillLocation')"
+			></span>
+		</div>
 	</div>
 </template>
 
 <script>
-import "../../node_modules/jquery.maskedinput/src/jquery.maskedinput.js";
 export default {
 	name: "CustomInput",
 	props: {
 		field: {
 			type: Object,
-			default: {
+			default: () => ({
 				value: "",
+				name: "",
 				placeholder: "",
-				required: false,
-				error: {
-					message: "",
-					show: false
-				}
-			}
+				required: false
+			})
 		},
 		inputType: {
 			type: String,
@@ -36,11 +45,17 @@ export default {
 		inputMask: {
 			type: String,
 			default: ""
-        }
-	},
-	methods: {
-		hideError() {
-			this.field.error.show = false;
+		},
+		fillLocation: {
+			type: Object,
+			default: () => ({
+				show: false,
+				disabled: false
+			})
+		},
+		showHeading: {
+			type: Boolean,
+			default: false
 		}
 	},
 	created() {
@@ -48,22 +63,32 @@ export default {
 			function() {
 				return this.field.value;
 			},
-			function(newVal, oldVal) {
-				this.hideError();
+			function() {
+				this.field.error.show = false;
 			}
 		);
-	},
-	mounted() {
-		let vm = this;
-		if (this.inputMask.length) {
-			$(this.$el)
-				.find("input")
-				.mask(this.inputMask, {
-					completed() {
-                        vm.field.value = this.val();
-					}
-				});
-		}
+
+        this.$set(this.field, "error", {
+            show: false,
+            message: `Please enter ${this.field.name}`
+        });
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+.fillLocation {
+	background: url("../images/svg/target.svg") no-repeat;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+	&.disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
+}
+</style>

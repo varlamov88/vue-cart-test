@@ -12,9 +12,9 @@ export default new Vuex.Store({
 			payment: {},
 			location: {}
 		},
-		countries: {
-
-		}
+		canUseLocation: false,
+		countries: [],
+		geoUrl: "https://geocode-maps.yandex.ru/1.x/?apikey=0990cb3d-336b-4255-a25b-76d0ace1a51f&format=json&kind=house&lang=en_US&geocode="
 	},
 	mutations: {
 		setProducts(state, arr) {
@@ -23,8 +23,11 @@ export default new Vuex.Store({
 		setUser(state, { key, value }) {
 			state.user[key] = value;
 		},
-		setCountries(state, obj) {
-			state.countries = obj;
+		setCanUseLocation(state, bool) {
+			state.canUseLocation = bool;
+		},
+		setCountries(state, arr) {
+			state.countries = arr;
 		}
 	},
 	actions: {}

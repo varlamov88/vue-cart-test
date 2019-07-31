@@ -5,8 +5,8 @@ $rem-px-only: false !default;
 @function rem-separator($list, $separator: false) {
 	@if $separator == "comma" or $separator == "space" {
 		@return append($list, null, $separator);
-	} 
-	
+	}
+
 	@if function-exists("list-separator") == true {
 		@return list-separator($list);
 	}
@@ -27,7 +27,7 @@ $rem-px-only: false !default;
 @function rem-convert($to, $values...) {
 	$result: ();
 	$separator: rem-separator($values);
-	
+
 	@each $value in $values {
 		@if type-of($value) == "number" and unit($value) == "rem" and $to == "px" {
 			$result: append($result, $value / 1rem * $rem-baseline, $separator);

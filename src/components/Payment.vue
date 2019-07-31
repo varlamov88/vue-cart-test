@@ -2,39 +2,38 @@
 	<div class="payment registration__payment">
 		<div class="heading">Payment</div>
 		<div class="payment__secure mb-20">This is a secure 128-bit SSL encrypted payment</div>
-		<form class="form billing__form" @submit.prevent="nextStep">
+		<form class="form billing__form" @submit.prevent="nextStep('payment', 'makeOrder')">
 			<div class="form__block">
-				<div class="sub-heading">Cardholder name</div>
-				<CustomInput inputType="text" :field="fields.fullName"></CustomInput>
+				<CustomInput input-type="text" :field="fields.fullName" :show-heading="true"></CustomInput>
 			</div>
 
 			<div class="form__block">
-				<div class="sub-heading">Card number</div>
 				<CustomInput
-					inputMask="9999 9999 9999 9999"
-					inputClass="form__field_noTransform"
-					inputType="text"
+					input-mask="#### #### #### ####"
+					input-class="form__field_noTransform"
+					input-type="text"
 					:field="fields.cardNumber"
+					:show-heading="true"
 				></CustomInput>
 			</div>
 			<div class="form__block">
 				<div class="row">
 					<div class="col col-column">
-						<div class="sub-heading">Expire date</div>
 						<CustomInput
-							inputMask="99/99"
-							inputClass="form__field_noTransform"
-							inputType="text"
+							input-mask="##/##"
+							input-class="form__field_noTransform"
+							input-type="text"
 							:field="fields.expireDate"
+							:show-heading="true"
 						></CustomInput>
 					</div>
 					<div class="col col-column">
-						<div class="sub-heading">Security code</div>
 						<CustomInput
-							inputMask="999"
-							inputClass="form__field_noTransform"
-							inputType="text"
+							input-mask="###"
+							input-class="form__field_noTransform"
+							input-type="text"
 							:field="fields.cvv"
+							:show-heading="true"
 						></CustomInput>
 					</div>
 				</div>
@@ -54,64 +53,38 @@ import { mix } from "@/mixins/cart.js";
 
 export default {
 	name: "Payment",
+	components: {
+		CustomInput
+	},
 	mixins: [mix],
 	data() {
 		return {
 			fields: {
 				fullName: {
 					value: "",
-					placeholder: "Full name",
-					required: true,
-					error: {
-						message: "Please enter full name",
-						show: false
-					}
+					name: "Full name",
+					required: true
 				},
 				cardNumber: {
 					value: "",
+					name: "Card Number",
 					placeholder: "xxxx xxxx xxxx xxxx",
-					required: true,
-					error: {
-						message: "Please enter card number",
-						show: false
-					}
+					required: true
 				},
 				expireDate: {
 					value: "",
+					name: "Expire date",
 					placeholder: "MM/YY",
-					required: true,
-					error: {
-						message: "Please enter expire date",
-						show: false
-					}
+					required: true
 				},
 				cvv: {
 					value: "",
+					name: "Security code",
 					placeholder: "",
-					required: true,
-					error: {
-						message: "Please enter security code",
-						show: false
-					}
+					required: true
 				}
 			}
 		};
-	},
-	components: {
-		CustomInput
-	},
-	methods: {
-		nextStep() {
-			this.checkErrors();
-
-			if (this.canContinue) {
-				this.$store.commit("setUser", {
-					key: "payment",
-					value: this.fieldsValues
-				});
-				this.$parent.$emit("makeOrder");
-			}
-		}
 	},
 	created() {
 		this.fillFromStore(this.$store.state.user.payment);
@@ -120,4 +93,25 @@ export default {
 </script>
 
 <style lang="scss">
+	@import "../scss/rem";
+	@import "../scss/variables";
+	.payment {
+		&__secure {
+			color: $dark-gray;
+			font-size: rem(15px);
+			font-weight: 300;
+			position: relative;
+			padding-left: 25px;
+			&::before {
+				content: "";
+				width: 19px;
+				height: 26px;
+				background: url(../images/svg/security.svg);
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: block;
+			}
+		}
+	}
 </style>

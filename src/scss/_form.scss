@@ -9,46 +9,25 @@
 		justify-content: space-between;
 		position: relative;
 		width: 100%;
-		&-city {
-			position: relative;
-			&::after {
-				content: "";
-				background: url("../images/svg/target.svg") no-repeat;
-				width: 20px;
-				height: 20px;
-				position: absolute;
-				top: 50%;
-				right: 0;
-				transform: translate(-50%, -50%);
-			}
-		}
-		&-bank {
-			position: relative;
-			.after {
-				width: 20px;
-				height: 20px;
-				position: absolute;
-				top: 50%;
-				right: 0;
-				transform: translate(-50%, -50%);
-			}
-		}
 	}
 	&__field {
 		font-family: $main-font;
 		font-size: 1rem;
 		font-weight: 300;
-		border: 1px solid #dedcdc;
+		border: 1px solid $gray;
 		border-radius: 5px;
 		box-sizing: border-box;
 		outline: none;
 		background-color: $white;
 		color: $black;
+		display: block;
 		width: 100%;
 		padding: 0.6575em 0.875em;
+		margin: 0;
 		text-transform: capitalize;
+		line-height: inherit;
 		&_noTransform {
-			text-transform: unset;
+			text-transform: none;
 		}
 		&_error {
 			background-color: #fffdef;
@@ -59,6 +38,7 @@
 			font-size: rem(13px);
 			font-weight: 300;
 			line-height: rem(12px);
+			align-self: center;
 		}
 		&-error {
 			box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
